@@ -5,23 +5,12 @@ const helius = new Helius(process.env.HELIUS_API_KEY)
 
 // walletAddress: String
 // return: Object 
-/* 
-- amount will be formatted to be readable
-  "walletAddress": "0x123",
-  "tokens": [
-    {
-      "tokenAddress": "0x123",
-      "amount": xyz
-    }
-  ]
-}
-*/
 // TODO: Pass in a wallet address as parameter
-export default fetchWalletContent = async() => {
+export default fetchWalletContent = async(walletAddress) => {
   var totalPages = 0
 
   var walletContent = {
-    walletAddress: "",
+    walletAddress: walletAddress,
     tokens: [],
   }
 
@@ -33,7 +22,7 @@ export default fetchWalletContent = async() => {
       options: {
         showZeroBalance: false
       },
-      owner: process.env.TEST_ADDRESS   //walletAddress
+      owner: walletAddress
     });
 
     // get total pages for given addresss
@@ -79,7 +68,3 @@ export default fetchWalletContent = async() => {
 
   return walletContent
 }
-
-
-const wallet = await fetchWalletContent()
-console.log(wallet)
