@@ -5,7 +5,6 @@ const helius = new Helius(process.env.HELIUS_API_KEY)
 
 // walletAddress: String
 // return: Object 
-// TODO: Pass in a wallet address as parameter
 export default fetchWalletContent = async(walletAddress) => {
   var totalPages = 0
 
