@@ -35,12 +35,22 @@ export default fetchWalletContent = async(walletAddress) => {
       })
       // initRes[tpData] gives :value
     }
-    // capture rest of data
   } catch (error) {
     console.error(error)
   }
 
-  
+  walletContent = getTokenAccountsPaginated(totalPages, walletAddress)
+  return walletContent
+}
+
+// totalPages: number
+// returns: Object
+const getTokenAccountsPaginated = async(totalPages, walletAddress) => {
+  var tempWalletContent = {
+    walletAddress: walletAddress,
+    tokens: [],
+  }
+
   // iterate over all remaining pages capturing data
   for (let page = 2; page <= totalPages; totalPages+=1) {
     try {
@@ -50,11 +60,11 @@ export default fetchWalletContent = async(walletAddress) => {
         options: {
           showZeroBalance: false
         },
-        owner: process.env.TEST_ADDRESS
+        owner: walletAddress
       })
 
       for (const token of res.token_accounts) {
-        walletContent.tokens.push({
+        tempWalletContent.tokens.push({
           "token_address": token.mint,
           "amount": token.amount,
         })
@@ -66,5 +76,5 @@ export default fetchWalletContent = async(walletAddress) => {
     }
   }
 
-  return walletContent
+  return tempWalletContent
 }
