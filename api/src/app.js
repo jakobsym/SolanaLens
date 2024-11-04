@@ -1,6 +1,7 @@
 //import { fetchWalletContent } from './utils/helius.js'
 import Fastify from 'fastify'
 import walletRoutes from './routes/wallet.js'
+import tokenRoutes from './routes/token.js'
 
  const Server = async() => {
   
@@ -9,6 +10,7 @@ import walletRoutes from './routes/wallet.js'
   })
 
   fastify.register(walletRoutes, {prefix: '/v0/wallet'})
+  fastify.register(tokenRoutes, {prefix: '/v0/token'})
 
   fastify.listen({ port: 3000 }, function (err, address) {
     if (err) {

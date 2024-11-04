@@ -6,6 +6,8 @@ const walletRoutes = (fastify, options) => {
     fastify.get('/:walletAddress', async(req, res) => {
     })
 
+
+
 }
 
 export default walletRoutes;
