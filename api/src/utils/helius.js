@@ -4,7 +4,7 @@ import 'dotenv/config'
 const helius = new Helius(process.env.HELIUS_API_KEY)
 
 // walletAddress: String
-// return: Object 
+// return: Array of Token Object(s) 
 export default fetchWalletContent = async(walletAddress) => {
   var totalPages = 0
 
@@ -39,7 +39,7 @@ export default fetchWalletContent = async(walletAddress) => {
   }
 
   walletContent = getTokenAccountsPaginated(totalPages, walletAddress)
-  return walletContent
+  return walletContent.tokens
 }
 
 // totalPages: number

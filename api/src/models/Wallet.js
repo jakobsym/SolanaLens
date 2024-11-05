@@ -4,7 +4,7 @@ walletAddress: String
 tokens: Token
 */
 export default class Wallet {
-    constructor(walletAddress, tokens = []) {
+    constructor(walletAddress, tokens = {}) {
         this.walletAddress = walletAddress
         this.tokens = tokens.map(
             token => new Token(token.tokenAddress, token.amount)
