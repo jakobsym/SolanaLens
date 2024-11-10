@@ -1,13 +1,13 @@
-import { Token } from './Tokens'
+import { Token } from './Tokens.js'
 /*
 walletAddress: String
 tokens: Token
 */
 export default class Wallet {
-    constructor(walletAddress, tokens = {}) {
+    constructor(walletAddress, tokens = []) {
         this.walletAddress = walletAddress
         this.tokens = tokens.map(
-            token => new Token(token.tokenAddress, token.amount)
+            token => new Token(token.token_address, token.amount)
         )
     }
 }
