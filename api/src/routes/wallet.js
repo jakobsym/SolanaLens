@@ -1,5 +1,7 @@
 import Wallet from '../models/Wallet.js'
 import fetchWalletContent from '../utils/helius.js'
+import formatTokenAmount from '../middleware/format.js'
+
 const walletRoutes = (fastify, options) => {
     
     //TODO: Create a validation function on param
@@ -7,9 +9,7 @@ const walletRoutes = (fastify, options) => {
         try {
             const walletAddressObj = req.params
             const tokens = await fetchWalletContent(walletAddressObj)
-            // TODO: before wallet of tokens gets sent back to user
-            //      the amounts of each token need to be cleaned  
-            var wallet = new Wallet(walletAddressObj.walletAddress, tokens)          
+            var wallet = new Wallet(walletAddressObj.walletAddress, formatTokenAmount(tokens))          
             res.code(200).header('Content-Type', 'application/json').send(wallet)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in wallet route')
