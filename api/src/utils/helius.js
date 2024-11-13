@@ -37,7 +37,7 @@ const fetchWalletContent = async(walletAddressObj) => {
 
     }
     for (let page = 2; page <= totalPages; page+=1){
-      await delay(500)
+      await delay(250)
       try {
         let res = await helius.rpc.getTokenAccounts({
           page: page,
