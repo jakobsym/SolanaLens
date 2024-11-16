@@ -64,4 +64,39 @@ const fetchWalletContent = async(walletAddressObj) => {
   return walletContent.tokens
 }
 
+
+// way to get top 10 holders of a given token
+// input: a coin address from telegram
+
+//TODO: Consider how caching the created set helps with lookup in the future
+export const fetchTokenHolders = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.tokenAddress
+  // create set of token account objects
+  // i.e: set { ..., {tokenAccount: walletAddress, amount: total amount}, ...}
+  // we can then sort this set, iterate over top X 
+  let tokenHolders = new Set()
+
+  try {
+    let initRes = await helius.rpc.getTokenAccounts({
+      page: 1,
+      limit: 1000,
+      options: {
+        showZeroBalance: false
+      },
+      mint: tokenAddress
+    })
+    for(const holder of initRes.token_accounts){
+      tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
+    }
+  } catch(error) {
+    console.error(error)
+  }
+  return tokenHolders
+}
+
+const fetchTop10Holders = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.token_address
+
+}
+
 export default fetchWalletContent

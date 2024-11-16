@@ -1,3 +1,6 @@
+import { fetchTokenHolders } from "../utils/helius.js"
+
+
 const tokenRoutes = (fastify, options) => {
 
     // enter CA and in return you get
@@ -12,6 +15,15 @@ const tokenRoutes = (fastify, options) => {
     */
     // market cap, pair age, 
     fastify.get('/:tokenAddress', async(req, res) => {
+        try {
+            const tokenAddressObj = req.params
+            const holders = await fetchTokenHolders(tokenAddressObj)
+            console.log(holders)
+            res.code(200).header('Content-Type', 'application/json').send(holders)
+        } catch (error) {
+            fastify.log.error({error, params: req.params}, 'Error in Token route')
+            res.code(500).send({error: 'Unexpected error occurred'})
+        }
     })
 
     // top 10 holders
