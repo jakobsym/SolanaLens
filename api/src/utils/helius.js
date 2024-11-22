@@ -69,7 +69,9 @@ const fetchWalletContent = async(walletAddressObj) => {
 // input: a coin address from telegram
 
 //TODO: Consider how caching the created set helps with lookup in the future
+// TODO: Handler Catch errors 
 export const fetchTokenHolders = async(tokenAddressObj) => {
+  const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
   const tokenAddress = tokenAddressObj.tokenAddress
   // create set of token account objects
   // i.e: set { ..., {tokenAccount: walletAddress, amount: total amount}, ...}
@@ -88,15 +90,36 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
     for(const holder of initRes.token_accounts){
       tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
     }
+    total_pages = initRes.total
+    
+    for (let page = 2; page <= total_pages; page++) {
+      delay(250)
+      try {
+        let res = await helius.rpc.getTokenAccounts({
+          page: page,
+          limit: 1000,
+          options: {
+            showZeroBalance: false
+          },
+          mint: tokenAddress
+        })
+        for (const holder of res.token_accounts) {
+          tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
+        }
+      } catch(error) {
+        console.error(error)
+      }
+    }
+
   } catch(error) {
     console.error(error)
   }
+
   return tokenHolders
 }
 
-const fetchTop10Holders = async(tokenAddressObj) => {
-  const tokenAddress = tokenAddressObj.token_address
-
+const fetchTop10Holders = async(holders) => {
+  // holders is a set of all holders + amounts for a given token
 }
 
 export default fetchWalletContent
