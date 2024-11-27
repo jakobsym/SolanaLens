@@ -1,5 +1,5 @@
 import { fetchTokenHolders } from "../utils/helius.js"
-
+import 'dotenv/config'
 
 const tokenRoutes = (fastify, options) => {
 
@@ -17,9 +17,8 @@ const tokenRoutes = (fastify, options) => {
     fastify.get('/:tokenAddress', async(req, res) => {
         try {
             const tokenAddressObj = req.params
-            const holders = await fetchTokenHolders(tokenAddressObj)
-            console.log(holders)
-            res.code(200).header('Content-Type', 'application/json').send(holders)
+            const holderAmount = await fetchTokenHolders(tokenAddressObj)
+            res.code(200).header('Content-Type', 'application/json').send(holderAmount)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in Token route')
             res.code(500).send({error: 'Unexpected error occurred'})

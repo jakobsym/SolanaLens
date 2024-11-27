@@ -73,12 +73,14 @@ const fetchWalletContent = async(walletAddressObj) => {
 export const fetchTokenHolders = async(tokenAddressObj) => {
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
   const tokenAddress = tokenAddressObj.tokenAddress
+  let totalPages = 0
   // create set of token account objects
   // i.e: set { ..., {tokenAccount: walletAddress, amount: total amount}, ...}
   // we can then sort this set, iterate over top X 
   let tokenHolders = new Set()
-
+  
   try {
+    
     let initRes = await helius.rpc.getTokenAccounts({
       page: 1,
       limit: 1000,
@@ -87,13 +89,16 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
       },
       mint: tokenAddress
     })
+    totalPages = initRes.total
+    
+    
     for(const holder of initRes.token_accounts){
       tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
     }
-    total_pages = initRes.total
     
-    for (let page = 2; page <= total_pages; page++) {
-      delay(250)
+    
+    for (let page = 2; page <= totalPages; page+=1) {
+      await delay(100)
       try {
         let res = await helius.rpc.getTokenAccounts({
           page: page,
@@ -107,7 +112,7 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
           tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
         }
       } catch(error) {
-        console.error(error)
+        console.error("pagination error (token): ", error)
       }
     }
 
@@ -115,11 +120,12 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
     console.error(error)
   }
 
-  return tokenHolders
+  return tokenHolders.size
 }
 
-const fetchTop10Holders = async(holders) => {
-  // holders is a set of all holders + amounts for a given token
+
+
+const fetchTop10Holders = async(tbd) => {
 }
 
 export default fetchWalletContent

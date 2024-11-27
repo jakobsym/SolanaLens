@@ -2,9 +2,9 @@
 import Fastify from 'fastify'
 import walletRoutes from './routes/wallet.js'
 import tokenRoutes from './routes/token.js'
+import 'dotenv/config'
 
- const Server = async() => {
-  
+const Server = async() => {
   const fastify = Fastify({
     logger: true
   })
