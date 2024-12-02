@@ -1,5 +1,4 @@
 import { Helius } from "helius-sdk"
-import {GetTokenSupplyApi, getTokenSupply} from "@solana/web3.js"
 import 'dotenv/config'
 
 const helius = new Helius(process.env.HELIUS_API_KEY)
@@ -124,9 +123,28 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
   return tokenHolders.size
 }
 
-
+// rate limited to 600req/min
 export const fetchTokenPrice = async(tokenAddressObj) => {
   const tokenAddress = tokenAddressObj.tokenAddress
+  var url = 'https://api.jup.ag/price/v2?ids='
+  url += tokenAddress;
+  var price = 0;
+
+  try {
+    const res = await fetch(url);
+    
+    if(!res.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    };
+    
+    const jsonRes = await res.json()
+    price = jsonRes.data[tokenAddress].price
+
+  }catch(error){
+    console.error("error fetching price", error)
+  };
+
+  return price;
 }
 
 export const fetchTokenFDV = async(tokenAddressObj) => {
