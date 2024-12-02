@@ -11,7 +11,7 @@ const tokenRoutes = (fastify, options) => {
         24h volume
         pair age
         % gain over 1H
-        total holders
+        total holders (DONE)
     */
     // market cap, pair age, 
     fastify.get('/:tokenAddress', async(req, res) => {

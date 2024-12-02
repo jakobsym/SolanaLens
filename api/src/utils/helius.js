@@ -1,4 +1,5 @@
 import { Helius } from "helius-sdk"
+import {GetTokenSupplyApi, getTokenSupply} from "@solana/web3.js"
 import 'dotenv/config'
 
 const helius = new Helius(process.env.HELIUS_API_KEY)
@@ -122,6 +123,23 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
 
   return tokenHolders.size
 }
+
+
+export const fetchTokenPrice = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.tokenAddress
+}
+
+export const fetchTokenFDV = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.tokenAddress
+}
+
+// TODO: Test
+export const fetchTokenSupply = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.tokenAddress
+  return await getTokenSupply(tokenAddress)
+}
+
+
 
 
 
