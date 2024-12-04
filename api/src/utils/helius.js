@@ -1,4 +1,5 @@
 import { Helius } from "helius-sdk"
+import { Connection, PublicKey } from "@solana/web3.js"
 import 'dotenv/config'
 
 const helius = new Helius(process.env.HELIUS_API_KEY)
@@ -154,7 +155,15 @@ export const fetchTokenFDV = async(tokenAddressObj) => {
 // TODO: Test
 export const fetchTokenSupply = async(tokenAddressObj) => {
   const tokenAddress = tokenAddressObj.tokenAddress
-  return await getTokenSupply(tokenAddress)
+  const supply = 0;
+  try {
+    const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+    const tokenPubKey = new PublicKey(tokenAddress)
+    supply =  await connection.getTokenSupply(tokenPubKey);
+  } catch(error) {
+    return console.error(error)
+  };
+  return supply;
 }
 
 
