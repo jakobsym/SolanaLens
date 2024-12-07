@@ -166,6 +166,21 @@ export const fetchTokenSupply = async(tokenAddressObj) => {
   return supply;
 }
 
+//TODO: Test
+export const fetchTokenAge = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.tokenAddress
+  const age = 0;
+  
+  try {
+    const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+    const tokenPubKey = new PublicKey(tokenAddress);
+    age = await connection.getAccountInfo(tokenPubKey);
+    // TODO: JSON response is returned I think?
+  }catch (error) {
+    return console.error(error)
+  };
+  return age
+}
 
 
 
