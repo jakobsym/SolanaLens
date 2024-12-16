@@ -1,5 +1,6 @@
 import { fetchTokenHolders, fetchTokenPrice, fetchTokenFDV } from "../utils/helius.js"
 import 'dotenv/config'
+import {fetchProgramAddress, fetchTokenMetadata } from "../utils/rpc.js"
 
 const tokenRoutes = (fastify, options) => {
 
@@ -19,8 +20,9 @@ const tokenRoutes = (fastify, options) => {
             const tokenAddressObj = req.params
             //const holderAmount = await fetchTokenHolders(tokenAddressObj)
             //const tokenPrice = await fetchTokenPrice(tokenAddressObj);
-            const tokenFDV = await fetchTokenFDV(tokenAddressObj);
-            res.code(200).header('Content-Type', 'application/json').send(tokenPrice)
+            const tokenProgramAddress = await fetchProgramAddress(tokenAddressObj)
+            const metadata = await fetchTokenMetadata(tokenProgramAddress);
+            res.code(200).header('Content-Type', 'application/json').send(metadata)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in Token route')
             res.code(500).send({error: 'Unexpected error occurred'})

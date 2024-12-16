@@ -152,21 +152,11 @@ export const fetchTokenFDV = async(tokenAddressObj) => {
   const tokenAddress = tokenAddressObj.tokenAddress
 }
 
-// TODO: Test
-export const fetchTokenSupply = async(tokenAddressObj) => {
-  const tokenAddress = tokenAddressObj.tokenAddress
-  const supply = 0;
-  try {
-    const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
-    const tokenPubKey = new PublicKey(tokenAddress)
-    supply =  await connection.getTokenSupply(tokenPubKey);
-  } catch(error) {
-    return console.error(error)
-  };
-  return supply;
-}
 
-//TODO: Test
+
+
+
+//TODO: Work on me
 export const fetchTokenAge = async(tokenAddressObj) => {
   const tokenAddress = tokenAddressObj.tokenAddress
   const age = 0;
