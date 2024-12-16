@@ -1,6 +1,5 @@
 import {PublicKey, Connection} from '@solana/web3.js'
 import {deserializeMetadata} from '@metaplex-foundation/mpl-token-metadata'
-import { lamports } from '@metaplex-foundation/umi';
 
 // Metaplex Token ProgID: metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s
 
