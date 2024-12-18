@@ -16,7 +16,6 @@ const fetchWalletContent = async(walletAddressObj) => {
     tokens: [],
   }
 
-  // TODO: Maybe split these into seperate functions
   try {
     let initRes = await helius.rpc.getTokenAccounts({
       page: 1,
@@ -148,28 +147,9 @@ export const fetchTokenPrice = async(tokenAddressObj) => {
   return price;
 }
 
-export const fetchTokenFDV = async(tokenAddressObj) => {
-  const tokenAddress = tokenAddressObj.tokenAddress
-}
-
-
-
-
-
-//TODO: Work on me
-export const fetchTokenAge = async(tokenAddressObj) => {
-  const tokenAddress = tokenAddressObj.tokenAddress
-  const age = 0;
-  
-  try {
-    const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
-    const tokenPubKey = new PublicKey(tokenAddress);
-    age = await connection.getAccountInfo(tokenPubKey);
-    // TODO: JSON response is returned I think?
-  }catch (error) {
-    return console.error(error)
-  };
-  return age
+// TODO: Move this to middleware
+export const fetchTokenFDV = (tokenPrice, tokenSupply) => {
+  return tokenPrice * tokenSupply
 }
 
 

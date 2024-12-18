@@ -20,4 +20,9 @@ const formatTokenAmount = (tokens) => {
     return tmpTokens
 }
 
+
+export const formatSupply = (supply) => {
+    
+    
+}
 export default formatTokenAmount

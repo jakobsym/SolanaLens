@@ -26,7 +26,7 @@ export const fetchTokenMetadata = async(tokenProgramAddress) => {
             executable: accountInfo.executable,
             lamports: accountInfo.lamports,
             owner: accountInfo.owner,
-            // rentEpoch: optional
+            // rentEpoch?:
         }
         const rpcAccount = {
             ...accoutHeader,
@@ -41,18 +41,37 @@ export const fetchTokenMetadata = async(tokenProgramAddress) => {
     }
 }
 
-// TODO: Test
+
 export const fetchTokenSupply = async(tokenAddressObj) => {
     const tokenAddress = tokenAddressObj.tokenAddress
-    const supply = 0;
+    
     try {
       const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
       const tokenPubKey = new PublicKey(tokenAddress)
-      supply =  await connection.getTokenSupply(tokenPubKey);
+      const supply = await connection.getTokenSupply(tokenPubKey);
+      return supply.value['uiAmount']
     } catch(error) {
+        console.error(error)
+        throw error  
+    };
+}
+
+
+//TODO: Work on me
+export const fetchTokenAge = async(tokenAddressObj) => {
+    const tokenAddress = tokenAddressObj.tokenAddress
+    const age = 0;
+    
+    try {
+      const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+      const tokenPubKey = new PublicKey(tokenAddress);
+      age = await connection.getAccountInfo(tokenPubKey);
+      // TODO: JSON response is returned I think?
+    }catch (error) {
       return console.error(error)
     };
-    return supply;
+    return age
   }
+  
 
 export default fetchProgramAddress;
