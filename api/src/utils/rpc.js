@@ -110,6 +110,23 @@ export const fetchTokenSupply = async(tokenAddressObj) => {
     };
 }
 
+// fetches ONLY from Raydium Pools 
+// Raydium PID: 675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8
+// baseMint: offset of 8 bytes
+// quoteMint: offset of 40 bytes
+export const fetchTokenLiquidity = async(tokenAddressObj) => {
+    const tokenAddress = tokenAddressObj.tokenAddress;
+    const raydiumID = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
+    const connection = new Connection(MAINNET_CONNECTION, 'confirmed');
+    const pubKey = new PublicKey(raydiumID)
+    try {
+        const res = await connection.getProgramAccounts(pubKey)
+        return res
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}
 
 
 export default fetchProgramAddress;

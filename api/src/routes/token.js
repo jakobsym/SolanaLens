@@ -1,6 +1,6 @@
 import { fetchTokenHolders, fetchTokenPrice, fetchTokenFDV } from "../utils/helius.js"
 import 'dotenv/config'
-import {fetchProgramAddress, fetchTokenAge, fetchTokenMetadata, fetchTokenSupply } from "../utils/rpc.js"
+import {fetchProgramAddress, fetchTokenAge, fetchTokenLiquidity, fetchTokenMetadata, fetchTokenSupply } from "../utils/rpc.js"
 
 const tokenRoutes = (fastify, options) => {
     // enter CA and in return you get
@@ -10,6 +10,8 @@ const tokenRoutes = (fastify, options) => {
         FDV (DONE)
         pair age (1/2 DONE)
         total holders (DONE)
+        LP Burned?
+        Mint Auth on/off
         liq ()
         24h volume ()
         % gain over 1H ()
@@ -25,11 +27,11 @@ const tokenRoutes = (fastify, options) => {
             //const metadata = await fetchTokenMetadata(tokenAddressObj);
             //const supply = await fetchTokenSupply(tokenAddressObj);
             //const tokenFDV = fetchTokenFDV(tokenPrice, supply)
-            //const twitterUrl = fetchSocials(tokenAddressObj);
-            
-            // this does not work
-            const transactions = await fetchTokenAge(tokenAddressObj);
-            res.code(200).header('Content-Type', 'application/json').send(transactions)
+            //const twitterUrl = fetchSocials(tokenAddressObj);    
+            //const transactions = await fetchTokenAge(tokenAddressObj);
+            const liq = await fetchTokenLiquidity(tokenAddressObj);
+
+            res.code(200).header('Content-Type', 'application/json').send(liq)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in Token route')
             res.code(500).send({error: 'Unexpected error occurred'})
