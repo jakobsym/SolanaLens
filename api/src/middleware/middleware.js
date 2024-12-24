@@ -5,3 +5,8 @@ export const fetchSocials = (tokenAddressObj) => {
     let twitterUrl = ""
     return twitterUrl
 }
+
+// Returns a String representation of a tokens address
+export const createTokenAddress = (tokenAddressObj) => {
+    return tokenAddressObj.tokenAddress;
+}

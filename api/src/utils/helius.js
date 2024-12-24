@@ -70,9 +70,8 @@ const fetchWalletContent = async(walletAddressObj) => {
 
 //TODO: Consider how caching the created set helps with lookup in the future
 // TODO: Handler Catch errors 
-export const fetchTokenHolders = async(tokenAddressObj) => {
+export const fetchTokenHolders = async(tokenAddress) => {
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const tokenAddress = tokenAddressObj.tokenAddress
   let totalPages = 0
   // create set of token account objects
   // i.e: set { ..., {tokenAccount: walletAddress, amount: total amount}, ...}
@@ -124,8 +123,7 @@ export const fetchTokenHolders = async(tokenAddressObj) => {
 }
 
 // rate limited to 600req/min
-export const fetchTokenPrice = async(tokenAddressObj) => {
-  const tokenAddress = tokenAddressObj.tokenAddress
+export const fetchTokenPrice = async(tokenAddress) => {
   var url = 'https://api.jup.ag/price/v2?ids='
   url += tokenAddress;
   var price = 0;
@@ -156,6 +154,62 @@ export const fetchTokenFDV = (tokenPrice, tokenSupply) => {
 
 
 const fetchTop10Holders = async(tbd) => {
+}
+
+/* Does not work currently */
+// fetches ONLY from Raydium Pools
+// Raydium PID: 675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8
+// baseMint: offset of 8 bytes
+// quoteMint: offset of 40 bytes
+export const fetchTokenLiquidity = async(tokenAddressObj) => {
+  const tokenAddress = tokenAddressObj.tokenAddress;
+  const tokenPubKey = new PublicKey(tokenAddress)
+  const raydiumID = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
+  const url = process.env.HELIUS_RPC_URL
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json" 
+      },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: "raydium-pools",
+        method: "getProgramAccounts",
+        params: [
+          "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8", 
+          {
+            "encoding": "jsonParsed",
+            "filters": [
+              {
+                "dataSize": 392 
+              },
+              {
+                "memcmp": {
+                  "offset": 8,
+                  "bytes": tokenPubKey
+                },
+              },
+              /*
+              {
+                "memcmp": {
+                  "offset": 40,
+                  "bytes": tokenPubKey
+                },
+              },
+              */
+            ],
+          },
+        ],
+      })
+    });
+
+    const data = await res.json()
+    return JSON.stringify(data) 
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
 }
 
 export default fetchWalletContent

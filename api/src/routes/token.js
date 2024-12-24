@@ -1,6 +1,7 @@
-import { fetchTokenHolders, fetchTokenPrice, fetchTokenFDV } from "../utils/helius.js"
 import 'dotenv/config'
-import {fetchProgramAddress, fetchTokenAge, fetchTokenLiquidity, fetchTokenMetadata, fetchTokenSupply } from "../utils/rpc.js"
+import { createTokenAddress } from '../middleware/middleware.js'
+import { fetchTokenHolders, fetchTokenPrice, fetchTokenFDV, fetchTokenLiquidity  } from "../utils/helius.js"
+import {fetchProgramAddress, fetchTokenAge, fetchTokenMetadata, fetchTokenSupply } from "../utils/rpc.js"
 
 const tokenRoutes = (fastify, options) => {
     // enter CA and in return you get
@@ -12,6 +13,8 @@ const tokenRoutes = (fastify, options) => {
         total holders (DONE)
         LP Burned?
         Mint Auth on/off
+
+        // These are large WIP
         liq ()
         24h volume ()
         % gain over 1H ()
@@ -19,8 +22,8 @@ const tokenRoutes = (fastify, options) => {
 
     // market cap, pair age, 
     fastify.get('/:tokenAddress', async(req, res) => {
+        const tokenAddress = createTokenAddress(req.params)
         try {
-            const tokenAddressObj = req.params
             //const holderAmount = await fetchTokenHolders(tokenAddressObj)
             //const tokenPrice = await fetchTokenPrice(tokenAddressObj);
             //const tokenProgramAddress = await fetchProgramAddress(tokenAddressObj)
@@ -28,10 +31,9 @@ const tokenRoutes = (fastify, options) => {
             //const supply = await fetchTokenSupply(tokenAddressObj);
             //const tokenFDV = fetchTokenFDV(tokenPrice, supply)
             //const twitterUrl = fetchSocials(tokenAddressObj);    
-            //const transactions = await fetchTokenAge(tokenAddressObj);
-            const liq = await fetchTokenLiquidity(tokenAddressObj);
-
-            res.code(200).header('Content-Type', 'application/json').send(liq)
+            //const age = await fetchTokenAge(tokenAddressObj);
+            
+            res.code(200).header('Content-Type', 'application/json').send(tokenAddress)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in Token route')
             res.code(500).send({error: 'Unexpected error occurred'})
