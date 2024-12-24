@@ -1,6 +1,7 @@
 import { Helius } from "helius-sdk"
 import { Connection, PublicKey } from "@solana/web3.js"
 import 'dotenv/config'
+import { fetchTokenSupply } from "./rpc.js"
 
 const helius = new Helius(process.env.HELIUS_API_KEY)
 
@@ -79,7 +80,7 @@ export const fetchTokenHolders = async(tokenAddress) => {
   
   try {
     
-    let initRes = await helius.rpc.getTokenAccounts({
+    const initRes = await helius.rpc.getTokenAccounts({
       page: 1,
       limit: 1000,
       options: {
@@ -87,6 +88,8 @@ export const fetchTokenHolders = async(tokenAddress) => {
       },
       mint: tokenAddress
     })
+    return initRes
+    /*
     totalPages = initRes.total
     
     
@@ -113,12 +116,12 @@ export const fetchTokenHolders = async(tokenAddress) => {
         console.error("pagination error (token): ", error)
       }
     }
+    */
 
   } catch(error) {
     console.error(error)
   }
-
-  return tokenHolders.size
+  //return tokenHolders.size
 }
 
 // rate limited to 600req/min
@@ -144,11 +147,16 @@ export const fetchTokenPrice = async(tokenAddress) => {
   return price;
 }
 
-// TODO: Move this to middleware
-export const fetchTokenFDV = (tokenPrice, tokenSupply) => {
-  return tokenPrice * tokenSupply
-}
 
+export const fetchTokenFDV = async(price, tokenAddress) => {
+  try {
+    const supply = await fetchTokenSupply(tokenAddress)
+    return price * supply
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
 
 
 
