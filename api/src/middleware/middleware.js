@@ -10,3 +10,7 @@ export const fetchSocials = (tokenAddressObj) => {
 export const createTokenAddress = (tokenAddressObj) => {
     return tokenAddressObj.tokenAddress;
 }
+// Returns a String representation of a wallet address
+export const createWalletAddress = (walletAddressObj) => { 
+    return walletAddressObj.walletAddress;
+}

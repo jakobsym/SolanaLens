@@ -6,9 +6,8 @@ const helius = new Helius(process.env.HELIUS_API_KEY)
 
 // `walletAddressObj`: Object
 // return: Array of Token Object(s) 
-const fetchWalletContent = async(walletAddressObj) => {
+const fetchWalletContent = async(walletAddress) => {
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-  const walletAddress = walletAddressObj.walletAddress
   var totalPages = 0
 
   var walletContent = {
