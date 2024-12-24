@@ -1,9 +1,7 @@
-// Example URL where url param is tokenaddress 
-// https://x.com/search?q=6yjNqPzTSanBWSa6dxVEgTjePXBrZ2FoHLDQwYwEsyM6
-export const fetchSocials = (tokenAddressObj) => {
-    const tokenAddress = tokenAddressObj.tokenAddress;
-    let twitterUrl = ""
-    return twitterUrl
+// Returns a String representation twitter search of token address
+export const fetchSocials = (tokenAddress) => {
+    let twitterUrl = "https://x.com/search?q="
+    return twitterUrl+=tokenAddress
 }
 
 // Returns a String representation of a tokens address

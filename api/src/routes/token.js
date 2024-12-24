@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { createTokenAddress } from '../middleware/middleware.js'
+import { createTokenAddress, fetchSocials } from '../middleware/middleware.js'
 import { fetchTokenHolders, fetchTokenPrice, fetchTokenFDV, fetchTokenLiquidity  } from "../utils/helius.js"
 import {fetchProgramAddress, fetchTokenAge, fetchTokenMetadata, fetchTokenSupply } from "../utils/rpc.js"
 
@@ -30,10 +30,10 @@ const tokenRoutes = (fastify, options) => {
             //const metadata = await fetchTokenMetadata(tokenAddressObj);
             //const supply = await fetchTokenSupply(tokenAddressObj);
             //const tokenFDV = fetchTokenFDV(tokenPrice, supply)
-            //const twitterUrl = fetchSocials(tokenAddressObj);    
+            const twitterUrl = fetchSocials(tokenAddress);    
             //const age = await fetchTokenAge(tokenAddressObj);
             
-            res.code(200).header('Content-Type', 'application/json').send(tokenAddress)
+            res.code(200).header('Content-Type', 'application/json').send(twitterUrl)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in Token route')
             res.code(500).send({error: 'Unexpected error occurred'})
