@@ -36,7 +36,7 @@ const fetchWalletContent = async(walletAddress) => {
 
     }
     for (let page = 2; page <= totalPages; page+=1){
-      await delay(250)
+      await delay(25)
       try {
         let res = await helius.rpc.getTokenAccounts({
           page: page,
@@ -96,7 +96,7 @@ export const fetchTokenHolders = async(tokenAddress) => {
     
     
     for (let page = 2; page <= totalPages; page+=1) {
-      await delay(100)
+      await delay(50)
       try {
         let res = await helius.rpc.getTokenAccounts({
           page: page,
