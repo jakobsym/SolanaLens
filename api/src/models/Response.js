@@ -1,5 +1,5 @@
 /* 
-// TODO: Add 'holders'
+// TODO: Add 'holders' && rename class to `TokenResponse`
 */
 export class Response{
     constructor(price, fdv, age, socials) {
