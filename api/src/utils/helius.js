@@ -63,66 +63,41 @@ const fetchWalletContent = async(walletAddress) => {
   }
   return walletContent.tokens
 }
-
-
 // way to get top 10 holders of a given token
 // input: a coin address from telegram
 
 //TODO: Consider how caching the created set helps with lookup in the future
 // TODO: Handler Catch errors 
-export const fetchTokenHolders = async(tokenAddress) => {
+export const fetchTokenHolderAmount = async(tokenAddress) => {
   const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-  let totalPages = 0
-  // create set of token account objects
-  // i.e: set { ..., {tokenAccount: walletAddress, amount: total amount}, ...}
-  // we can then sort this set, iterate over top X 
+  let page = 1
   let tokenHolders = new Set()
   
   try {
-    
-    const initRes = await helius.rpc.getTokenAccounts({
-      page: 1,
+    while(true) {
+      const initRes = await helius.rpc.getTokenAccounts({
+      page: page,
       limit: 1000,
-      options: {
+      options:{
         showZeroBalance: false
       },
       mint: tokenAddress
     })
-    return initRes
-    /*
-    totalPages = initRes.total
-    
-    
-    for(const holder of initRes.token_accounts){
-      tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
+    for(const holders in initRes.token_accounts){
+      tokenHolders.add({ownerAddress: holders.owner, tokenAmount: holders.amount})
     }
-    
-    
-    for (let page = 2; page <= totalPages; page+=1) {
-      await delay(50)
-      try {
-        let res = await helius.rpc.getTokenAccounts({
-          page: page,
-          limit: 1000,
-          options: {
-            showZeroBalance: false
-          },
-          mint: tokenAddress
-        })
-        for (const holder of res.token_accounts) {
-          tokenHolders.add({ownerAddress: holder.owner, tokenAmount: holder.amount})
-        }
-      } catch(error) {
-        console.error("pagination error (token): ", error)
-      }
+    page++;
+    if (initRes.token_accounts.length === 0) {
+      break
+    } 
     }
-    */
-
   } catch(error) {
     console.error(error)
+    throw error
   }
-  //return tokenHolders.size
+  return tokenHolders.size;
 }
+
 
 // rate limited to 600req/min
 export const fetchTokenPrice = async(tokenAddress) => {
