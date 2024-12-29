@@ -133,9 +133,9 @@ export const fetchTokenFDV = async(price, tokenAddress) => {
   }
 }
 
+const fetchTop10Holders = async(tokenHolderSet) => {
+  
 
-
-const fetchTop10Holders = async(tbd) => {
 }
 
 /* Does not work currently */
