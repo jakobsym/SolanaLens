@@ -1,8 +1,9 @@
 import 'dotenv/config'
 import { createTokenAddress, fetchSocials } from '../middleware/middleware.js'
 import { fetchTokenHolderAmount, fetchTokenPrice, fetchTokenFDV, fetchTokenLiquidity  } from "../utils/helius.js"
-import {fetchProgramAddress, fetchTokenAge, fetchTokenMetadata, fetchTokenSupply } from "../utils/rpc.js"
+import {fetchProgramAddress, fetchTokenAge, fetchTokenMetadata, fetchTokenSupply, fetchNameAndSymbol } from "../utils/rpc.js"
 import { Response } from '../models/Response.js'
+
 const tokenRoutes = (fastify, options) => {
     // enter CA and in return you get
 
@@ -27,14 +28,16 @@ const tokenRoutes = (fastify, options) => {
             const price = await fetchTokenPrice(tokenAddress);
             const age = await fetchTokenAge(tokenAddress);
             const fdv = await fetchTokenFDV(price, tokenAddress)
-            const socials = fetchSocials(tokenAddress);    
-
-            await Promise.allSettled([holders, price, age, fdv])
-            const response = new Response(price, fdv, age, holders, socials)
+            const [name, symbol] = await fetchNameAndSymbol(tokenAddress);
+            const socials = fetchSocials(tokenAddress);
+    
+            await Promise.allSettled([holders, price, age, fdv, name, symbol])
+            const response = new Response(symbol, name, fdv, price, age, holders, socials)
         
             //const tokenProgramAddress = await fetchProgramAddress(tokenAddress)
             //const metadata = await fetchTokenMetadata(tokenAddress);
             //const supply = await fetchTokenSupply(tokenAddress);
+            res.header('x-api-version', 'v0');
             res.code(200).header('Content-Type', 'application/json').send(response)
         } catch (error) {
             fastify.log.error({error, params: req.params}, 'Error in Token route')
