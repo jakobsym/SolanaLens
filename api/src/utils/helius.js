@@ -1,5 +1,5 @@
 import { Helius } from "helius-sdk"
-import { Connection, PublicKey } from "@solana/web3.js"
+import { PublicKey } from "@solana/web3.js"
 import 'dotenv/config'
 import { fetchTokenSupply } from "./rpc.js"
 

@@ -1,17 +1,12 @@
 import 'dotenv/config'
 import { createTokenAddress, fetchSocials } from '../middleware/middleware.js'
-import { fetchTokenHolderAmount, fetchTokenPrice, fetchTokenFDV, fetchTokenLiquidity  } from "../utils/helius.js"
-import {fetchProgramAddress, fetchTokenAge, fetchTokenMetadata, fetchTokenSupply, fetchNameAndSymbol } from "../utils/rpc.js"
+import { fetchTokenHolderAmount, fetchTokenPrice, fetchTokenFDV } from "../utils/helius.js"
+import {fetchTokenAge, fetchNameAndSymbol } from "../utils/rpc.js"
 import { Response } from '../models/Response.js'
 
 const tokenRoutes = (fastify, options) => {
-    // enter CA and in return you get
 
     /* 
-        price(usd) (DONE)
-        FDV (DONE)
-        pair age (1/2 DONE)
-        total holders (DONE)
         LP Burned?
         Mint Auth on/off
 
