@@ -84,7 +84,7 @@ export const fetchTokenAge = async(tokenAddress) => {
         })
         //const metadata = await fetchTokenMetadata(tokenAddressObj.tokenAddress)
         const blockTime = transactionsDetails.blockTime
-        const tokenAge = new Date(blockTime * 1000).toLocaleString()
+        const tokenAge = new Date(blockTime * 1000).toLocaleString('en-US',{dateStyle: "short"})
         
         return tokenAge
     }catch(error) {

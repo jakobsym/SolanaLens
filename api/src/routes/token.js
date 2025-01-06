@@ -15,7 +15,7 @@ const tokenRoutes = (fastify, options) => {
         24h volume ()
         % gain over 1   H ()
     */ 
-   // TODO: Fix `holders`
+    
     fastify.get('/:tokenAddress', async(req, res) => {
         const tokenAddress = createTokenAddress(req.params)
         try {
