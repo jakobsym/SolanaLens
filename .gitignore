@@ -1,5 +1,6 @@
 .env
 .session
-.venv
+.venv/
 venv
-/home/jakob/brypto/dbsb/bot/venv
+*.pyc
+__pycache__/
