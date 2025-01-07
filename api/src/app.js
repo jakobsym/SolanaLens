@@ -1,85 +1,29 @@
-import { Helius } from "helius-sdk"
+//import { fetchWalletContent } from './utils/helius.js'
+import Fastify from 'fastify'
+import telegramRateLimiter from './utils/rate_limit.js'
+import walletRoutes from './routes/wallet.js'
+import tokenRoutes from './routes/token.js'
 import 'dotenv/config'
 
-const helius = new Helius(process.env.HELIUS_API_KEY)
+const Server = async() => {
+  const fastify = Fastify({
+    logger: true
+  })
 
-// walletAddress: String
-// return: Object 
-/* 
-- amount will be formatted to be readable
-  "walletAddress": "0x123",
-  "tokens": [
-    {
-      "tokenAddress": "0x123",
-      "amount": xyz
-    }
-  ]
-}
-*/
-// TODO: Pass in a wallet address as parameter
-const fetchWalletContent = async() => {
-  var totalPages = 0
-
-  var walletContent = {
-    walletAddress: "",
-    tokens: [],
-  }
-
-  // TODO: Maybe split these into seperate functions
-  try {
-    let initRes = await helius.rpc.getTokenAccounts({
-      page: 1,
-      limit: 100,
-      options: {
-        showZeroBalance: false
-      },
-      owner: process.env.TEST_ADDRESS   //walletAddress
-    });
-
-    // get total pages for given addresss
-    totalPages = initRes.total
-    
-    for (const token of initRes.token_accounts) {
-      walletContent.tokens.push({
-        "token_address": token.mint,
-        "amount": token.amount
-      })
-      // initRes[tpData] gives :value
-    }
-    // capture rest of data
-  } catch (error) {
-    console.error(error)
-  }
-
+  fastify.register(walletRoutes, {prefix: '/v0/wallet'})
   
-  // iterate over all remaining pages capturing data
-  for (let page = 2; page <= totalPages; totalPages+=1) {
-    try {
-      let res = await helius.rpc.getTokenAccounts({
-        page: page,
-        limit: 100,
-        options: {
-          showZeroBalance: false
-        },
-        owner: process.env.TEST_ADDRESS
-      })
+  fastify.register(async(instance) => {
+    instance.register(telegramRateLimiter)
+    instance.register(tokenRoutes)
+  }, {prefix: '/v0/token'});
 
-      for (const token of res.token_accounts) {
-        walletContent.tokens.push({
-          "token_address": token.mint,
-          "amount": token.amount,
-        })
-      }
-
-    } catch (error) {
-      console.error(error)
-      break
+  fastify.listen({ port: 3000 }, function (err, address) {
+    if (err) {
+      fastify.log.error(err)
+      process.exit(1)
     }
-  }
-
-  return walletContent
+    fastify.log.info(`server listening on ${address}`)
+  })
 }
 
-
-const wallet = await fetchWalletContent()
-console.log(wallet)
+Server()

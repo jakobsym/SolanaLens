@@ -4,15 +4,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node -r dotenv/config ./src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@metaplex-foundation/js": "^0.20.1",
+    "@metaplex-foundation/mpl-token-metadata": "^3.3.0",
+    "@solana/web3.js": "^1.95.8",
     "dotenv": "^16.4.5",
     "fastify": "^5.0.0",
-    "helius-sdk": "^1.4.0"
+    "helius-sdk": "^1.4.0",
+    "ws": "^8.18.0"
   }
 }
