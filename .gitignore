@@ -1,1 +1,5 @@
 .env
+.session
+.venv
+venv
+/home/jakob/brypto/dbsb/bot/venv
