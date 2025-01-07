@@ -29,6 +29,18 @@ class TokenBucket {
         }
         return false
     }
+    /*
+    WIP
+    // `userBuckets`: Map<string, TokenBucket>
+    cleanBuckets(userBuckets) {
+        const now = Date.now()
+        for(const [userId, bucket] of userBuckets.entries()) {
+            if(now - bucket.lastRefillTime > 60 * 60 * 1000) {
+                userBuckets.delete(userId)
+            }
+        }
+    }
+    */
 
 }
 

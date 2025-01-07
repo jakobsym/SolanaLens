@@ -30,7 +30,7 @@
     <img src="images/mechanical_arm.png" alt="Logo" width="80" height="80">
   </a>
   -->
-  <h3 align="center">Solana Bonding Stream Bot</h3>
+  <h3 align="center">Solana Lens</h3>
 
   <!-- 
   <p align="center">
@@ -82,7 +82,10 @@ TBA
 
 
 ### Built With
-TBA
+Node.js / Fastify \
+Python \
+GCP Compute Engine \
+MySQL via Cloud SQL
 <!-- 
 * [![Vite][Vite.js]][Vite-url]
 * [![React][React.js]][React-url]
@@ -144,9 +147,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Jakob Symchych: jakob.symchych@my.utsa.edu
+Jakob Symchych: jakobsymchych@gmail.com
 
-Project Link: [https://github.com/jakobsym/dbsb](https://github.com/jakobsym/dbsb)
+Project Link: [https://github.com/jakobsym/SolanaLens](https://github.com/jakobsym/SolanaLens)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
