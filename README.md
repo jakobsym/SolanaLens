@@ -83,9 +83,9 @@ TBA
 
 ### Built With
 Node.js / Fastify \
-Python \
+Spring Boot \
 GCP Compute Engine \
-MySQL via Cloud SQL
+PostgreSQL
 <!-- 
 * [![Vite][Vite.js]][Vite-url]
 * [![React][React.js]][React-url]
