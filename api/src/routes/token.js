@@ -3,6 +3,7 @@ import { createTokenAddress, fetchSocials } from '../middleware/middleware.js'
 import { fetchTokenHolderAmount, fetchTokenPrice, fetchTokenFDV } from "../utils/helius.js"
 import {fetchTokenAge, fetchNameAndSymbol } from "../utils/rpc.js"
 import { Response } from '../models/Response.js'
+import { insertNewToken, queryHolderAmount } from '../utils/psql.js'
 
 const tokenRoutes = (fastify, options) => {
 
@@ -19,7 +20,10 @@ const tokenRoutes = (fastify, options) => {
     fastify.get('/:tokenAddress', async(req, res) => {
         const tokenAddress = createTokenAddress(req.params)
         try {
-            const holders = await fetchTokenHolderAmount(tokenAddress)
+            let holders = await queryHolderAmount(tokenAddress)
+            if (holders === -1) {
+                holders = await fetchTokenHolderAmount(tokenAddress)
+            }
             const price = await fetchTokenPrice(tokenAddress);
             const age = await fetchTokenAge(tokenAddress);
             const fdv = await fetchTokenFDV(price, tokenAddress)
